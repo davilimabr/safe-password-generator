@@ -2,6 +2,9 @@ $.getScript("js/SenhaAleatoria.js");
 
 $("#gerarSenha").click(function()
 {
+    if($("#tamanho").val() > 100)
+        return;
+    
     var geradorSenha = new SenhaAleatoria();
 
     opts = {
@@ -10,7 +13,6 @@ $("#gerarSenha").click(function()
         "simbolos"   : $("#simbolos").is(':checked'),
         "numeros"    : $("#numeros").is(':checked')
     };
-    
     geradorSenha.GerarSenha($("#tamanho").val(), opts);
 
     $("#senha").val(geradorSenha.Senha);
@@ -18,7 +20,6 @@ $("#gerarSenha").click(function()
     var progressBar;
     switch(geradorSenha.ForcaSenha)
     {
-        case 0:
         case 1:
             progressBar = getProgressBar("bg-danger", 1 * 100 / 4);
             break;
