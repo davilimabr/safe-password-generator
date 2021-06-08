@@ -1,100 +1,49 @@
-var txtBoxSenha = document.getElementById("senha");
-var tamanho = document.getElementById("tamanho");
-var maiusculas = document.getElementById("maiusculas");
-var minusculas = document.getElementById("minusculas");
-var simbolos = document.getElementById("simbolos");
-var numeros = document.getElementById("numeros");
+$.getScript("js/SenhaAleatoria.js");
 
-function Copiar()
+$("#gerarSenha").click(function()
 {
-    txtBoxSenha.select();
-    document.execCommand('copy');
-}
+    var geradorSenha = new SenhaAleatoria();
 
-function GerarSenha()
-{
-    var senha = "";
-
-    if(maiusculas.checked)
-        senha += GerarLetrasAleatorias(tamanho.value, true);
-
-    if(minusculas.checked)
-        senha += GerarLetrasAleatorias(tamanho.value);
+    opts = {
+        "maiusculas" : $('#maiusculas').is(':checked'),
+        "minusculas" : $("#minusculas").is(':checked'),
+        "simbolos"   : $("#simbolos").is(':checked'),
+        "numeros"    : $("#numeros").is(':checked')
+    };
     
-    if(simbolos.checked)
-        senha += GerarSimbolosAleatorios(tamanho.value);
+    geradorSenha.GerarSenha($("#tamanho").val(), opts);
 
-    if(numeros.checked)
-        senha += GerarNumerosAleatorios(tamanho.value);
-
-    senha = senha.shuffle();
-    senha = senha.substring(0, tamanho.value);
-
-    txtBoxSenha.value = senha;
-}
-
-String.prototype.shuffle = function () 
-{
-    var a = this.split(""),
-        n = a.length;
-
-    for(var i = n - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var tmp = a[i];
-        a[i] = a[j];
-        a[j] = tmp;
-    }
-    return a.join("");
-}
-
-function GerarNumeroAleatorio(min, max)
-{
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min)) + min;
-}
-
-function GerarNumerosAleatorios(qtd)
-{
-    var senha = "";
-    for(var i = 0; i < qtd; i++)
+    $("#senha").val(geradorSenha.Senha);
+    
+    var progressBar;
+    switch(geradorSenha.ForcaSenha)
     {
-        var numAleatorio = GerarNumeroAleatorio(48, 57);
-        senha += String.fromCharCode(numAleatorio);
+        case 0:
+        case 1:
+            progressBar = getProgressBar("bg-danger", 1 * 100 / 4);
+            break;
+        case 2:
+            progressBar = getProgressBar("bg-warning", 2 * 100 / 4);
+            break;
+        case 3:
+            progressBar = getProgressBar("bg-info", 3 * 100 / 4);
+            break;
+        case 4:
+            progressBar = getProgressBar("bg-success", 4 * 100 / 4);
+            break;
     }
-    return senha;
-}
+    $("#progressbar").html(progressBar);
+});
 
-function GerarLetrasAleatorias(qtd , upcase = false)
+$("#copiar").click(function()
 {
-    var senha = "";
-    for(var i = 0; i < qtd; i++)
-    {
-        var numAleatorio = GerarNumeroAleatorio(97, 122);
-        senha += String.fromCharCode(numAleatorio);
-    }
+    $("#senha").select();
+    document.execCommand('copy');
+});
 
-    if(upcase)
-        senha = senha.toUpperCase();
-
-    return senha;
-}
-
-function GerarSimbolosAleatorios(qtd)
+function getProgressBar(estilo, porcento)
 {
-    var senha = "";
-    for(var i = 0; i < qtd; i++)
-    {
-        var numAleatorio = GerarNumeroAleatorio(33, 126);
-
-        if( (numAleatorio > 47 && numAleatorio < 58) ||
-            (numAleatorio > 64 && numAleatorio < 91) ||
-            (numAleatorio > 97 && numAleatorio < 122) )
-            i--;
-        else
-            senha += String.fromCharCode(numAleatorio);
-    }
-
-    return senha;
+    return  `<div class=\"progress\">
+                <div class=\"progress-bar ${estilo}\" role=\"progressbar\" style=\"width: ${porcento}%\">Força da Senha</div>
+            </div>`;
 }
-
