@@ -1,7 +1,11 @@
 <h1 align="center">Gerador de senhas</h1>
-<h1 align="center">
-    <img src="apresentacao.gif">
-</h1>
+
+<div align="center">
+
+### [Ver projeto funcionando!](https://davilimabr.github.io/safe-password-generator)
+
+<img height="400" src="apresentacao.gif">
+</div> 
 
 ## 🔖 Sobre
 Aplicação que gera senhas aleatórias de acordo com parâmetros específicados pelo usuario. 
