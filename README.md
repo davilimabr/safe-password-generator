@@ -4,7 +4,7 @@
 
 ### [Ver projeto funcionando!](https://davilimabr.github.io/safe-password-generator)
 
-<img height="400" src="apresentacao.gif">
+<img height="400" src="gif.gif">
 </div> 
 
 ## 🔖 Sobre
